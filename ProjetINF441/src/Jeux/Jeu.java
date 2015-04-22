@@ -10,7 +10,7 @@ public abstract class Jeu<S, A> {
 
 	S initialState; // Position initiale du jeu
 	
-	int Player;//Joueur à qui c'est le tour
+	int Player;//Joueur à qui c'est le tour (utile ?)
 	
 	abstract S result(S state, A action); //Renvoie la position obtenue en
 											// appliquant l'action action à la
