@@ -11,7 +11,7 @@ public class TicTacToe extends Jeu<int[][], int[]> {
 	private int L;
 	private int H;
 
-	TicTacToe(int k, int L, int H) {
+	public TicTacToe(int k, int L, int H) {
 
 		this.k = k;
 		this.L = L;
@@ -20,7 +20,7 @@ public class TicTacToe extends Jeu<int[][], int[]> {
 		this.initialState = new int[L][H];
 	}
 
-	TicTacToe(int k, int L, int H, int[][] initialState) {
+	public TicTacToe(int k, int L, int H, int[][] initialState) {
 
 		assert ((initialState.length == L) && (initialState[0].length == H));
 
@@ -32,21 +32,214 @@ public class TicTacToe extends Jeu<int[][], int[]> {
 	}
 
 	@Override
-	int[][] result(int[][] state, int[] action) {
+	int[][] result(int[][] state, int[] action, int player) {
+
+		assert (player * player == 1);
+
+		if (state[action[1]][action[2]] == 0) {
+			int[][] result = state.clone();
+			result[action[1]][action[2]] = player;
+		}
 
 		return null; // Sortie lorsque l'action n'est pas légale
 	}
 
 	@Override
-	boolean terminal(int[][] state) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean terminal(int[][] state) {
+
+		boolean emptyCase = false;
+		int joueur = 0;
+		int compteur = 0;
+
+		// Vérification des colonnes
+
+		for (int i = 0; i < L; i++) {
+			joueur = 0;
+			compteur = 0;
+			for (int j = 0; j < H; j++) {
+
+				if (joueur != 0) {
+					if (state[i][j] == joueur) {
+						compteur++;
+						if (compteur >= this.k)
+							return true;
+					} else {
+						compteur = 0;
+						joueur = state[i][j];
+						if (state[i][j] == 0)
+							emptyCase = true;
+					}
+				}
+
+				else {
+					joueur = state[i][j];
+					if (state[i][j] != 0)
+						compteur++;
+					else
+						emptyCase = true;
+				}
+			}
+		}
+
+		// Vérification des lignes
+
+		for (int j = 0; j < H; j++) {
+			joueur = 0;
+			compteur = 0;
+			for (int i = 0; i < L; i++) {
+
+				if (joueur != 0) {
+					if (state[i][j] == joueur) {
+						compteur++;
+						if (compteur >= this.k)
+							return true;
+					} else {
+						compteur = 0;
+						joueur = state[i][j];
+
+					}
+				}
+
+				else {
+					joueur = state[i][j];
+					if (state[i][j] != 0)
+						compteur++;
+				}
+			}
+		}
+
+		// Vérification des diagonales
+
+		for (int l = k; l <= Math.min(L, H); l++) {
+			joueur = 0;
+			compteur = 0;
+			for (int i = 0; i < l; i++) {
+
+				if (joueur != 0) {
+					if (state[i][l - i - 1] == joueur) {
+						compteur++;
+						if (compteur >= this.k)
+							return true;
+					} else {
+						compteur = 0;
+						joueur = state[i][l - i - 1];
+					}
+				}
+
+				else {
+					joueur = state[i][l - i - 1];
+					if (state[i][l - i - 1] != 0)
+						compteur++;
+				}
+
+			}
+		}
+		return !emptyCase;
 	}
 
+	// Renvoie l'id du joueur gagnant, 0 si match nul et null si pas un état
+	// terminal
 	@Override
-	int utility(int[][] state) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int utility(int[][] state) {
+		boolean emptyCase = false;
+		int joueur = 0;
+		int compteur = 0;
+
+		// Vérification des colonnes
+
+		for (int i = 0; i < L; i++) {
+			joueur = 0;
+			compteur = 0;
+			for (int j = 0; j < H; j++) {
+
+				if (joueur != 0) {
+					if (state[i][j] == joueur) {
+						compteur++;
+						if (compteur >= this.k)
+							return joueur;
+					} else {
+						compteur = 0;
+						joueur = state[i][j];
+						if (state[i][j] == 0)
+							emptyCase = true;
+					}
+				}
+
+				else {
+					joueur = state[i][j];
+					if (state[i][j] != 0)
+						compteur++;
+					else
+						emptyCase = true;
+				}
+			}
+		}
+
+		// Vérification des lignes
+
+		for (int j = 0; j < H; j++) {
+			joueur = 0;
+			compteur = 0;
+			for (int i = 0; i < L; i++) {
+
+				if (joueur != 0) {
+					if (state[i][j] == joueur) {
+						compteur++;
+						if (compteur >= this.k)
+							return joueur;
+					} else {
+						compteur = 0;
+						joueur = state[i][j];
+
+					}
+				}
+
+				else {
+					joueur = state[i][j];
+					if (state[i][j] != 0)
+						compteur++;
+				}
+			}
+		}
+
+		// Vérification des diagonales
+		//TODO : je n'ai vérifié les diagonales que dans un sens...
+		for (int l = k; l <= Math.min(L, H); l++) {
+			joueur = 0;
+			compteur = 0;
+			for (int i = 0; i < l; i++) {
+
+				if (joueur != 0) {
+					if (state[i][l - i - 1] == joueur) {
+						compteur++;
+						if (compteur >= this.k)
+							return joueur;
+					} else {
+						compteur = 0;
+						joueur = state[i][l - i - 1];
+					}
+				}
+
+				else {
+					joueur = state[i][l - i - 1];
+					if (state[i][l - i - 1] != 0)
+						compteur++;
+				}
+
+			}
+		}
+		return emptyCase ? null : 0;
+	}
+
+	public void print(int[][] state) {
+
+		for (int i = 0; i < L; i++) {
+			for (int j = 0; j < H; j++) {
+				System.out.print(state[i][j] + " ");
+			}
+			System.out.println("");
+		}
+
 	}
 
 }
