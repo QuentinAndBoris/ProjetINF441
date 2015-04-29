@@ -32,13 +32,19 @@ public class TicTacToe extends Jeu<int[][], int[]> {
 	}
 
 	@Override
-	int[][] result(int[][] state, int[] action, int player) {
+	public int[][] result(int[][] state, int[] action, int player) {
 
 		assert (player * player == 1);
 
-		if (state[action[1]][action[2]] == 0) {
-			int[][] result = state.clone();
-			result[action[1]][action[2]] = player;
+		if (state[action[0]][action[1]] == 0) {
+			int[][] result = new int[L][H];
+			
+			for (int i = 0; i < L; i++)
+				for (int j = 0; j < H; j++)
+					result[i][j] = state[i][j];
+			
+			result[action[0]][action[1]] = player;
+			return result;
 		}
 
 		return null; // Sortie lorsque l'action n'est pas légale
@@ -134,11 +140,39 @@ public class TicTacToe extends Jeu<int[][], int[]> {
 
 			}
 		}
+
+		// Diagonales ascendantes
+
+		for (int l = -Math.min(H, L) + 1; l < Math.min(H, L) - 1; l++) {
+			joueur = 0;
+			compteur = 0;
+			for (int i = 0; i < l; i++) {
+
+				if (joueur != 0) {
+					if (state[i][l + i] == joueur) {
+						compteur++;
+						if (compteur >= this.k)
+							return true;
+					} else {
+						compteur = 0;
+						joueur = state[i][l + i];
+					}
+				}
+
+				else {
+					joueur = state[i][l + i];
+					if (state[i][l + i] != 0)
+						compteur++;
+				}
+			}
+		}
 		return !emptyCase;
 	}
 
 	// Renvoie l'id du joueur gagnant, 0 si match nul et null si pas un état
 	// terminal
+	// Ne gère pas les cas aberrants où les 2 joueurs ont gagné
+
 	@Override
 	public int utility(int[][] state) {
 		boolean emptyCase = false;
@@ -203,7 +237,8 @@ public class TicTacToe extends Jeu<int[][], int[]> {
 		}
 
 		// Vérification des diagonales
-		//TODO : je n'ai vérifié les diagonales que dans un sens...
+
+		// Diagonales descendantes
 		for (int l = k; l <= Math.min(L, H); l++) {
 			joueur = 0;
 			compteur = 0;
@@ -225,9 +260,35 @@ public class TicTacToe extends Jeu<int[][], int[]> {
 					if (state[i][l - i - 1] != 0)
 						compteur++;
 				}
-
 			}
 		}
+
+		// Diagonales ascendantes
+
+		for (int l = -Math.min(H, L) + 1; l < Math.min(H, L) - 1; l++) {
+			joueur = 0;
+			compteur = 0;
+			for (int i = 0; i < l; i++) {
+
+				if (joueur != 0) {
+					if (state[i][l + i] == joueur) {
+						compteur++;
+						if (compteur >= this.k)
+							return joueur;
+					} else {
+						compteur = 0;
+						joueur = state[i][l + i];
+					}
+				}
+
+				else {
+					joueur = state[i][l + i];
+					if (state[i][l + i] != 0)
+						compteur++;
+				}
+			}
+		}
+
 		return emptyCase ? null : 0;
 	}
 
