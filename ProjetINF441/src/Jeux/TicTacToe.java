@@ -1,5 +1,8 @@
 package Jeux;
 
+import java.util.HashSet;
+import java.util.Set;
+
 //Une première définfition naïve d'un TicTacToe, où l'on représente bêtement la grille par une matrice
 //et une action par un tableau de taille 2 (coordonnées du prochain coup)
 
@@ -38,11 +41,11 @@ public class TicTacToe extends Jeu<int[][], int[]> {
 
 		if (state[action[0]][action[1]] == 0) {
 			int[][] result = new int[L][H];
-			
+
 			for (int i = 0; i < L; i++)
 				for (int j = 0; j < H; j++)
 					result[i][j] = state[i][j];
-			
+
 			result[action[0]][action[1]] = player;
 			return result;
 		}
@@ -167,6 +170,20 @@ public class TicTacToe extends Jeu<int[][], int[]> {
 			}
 		}
 		return !emptyCase;
+	}
+
+	@Override
+	public Set<int[]> legalMoves(int[][] state) {
+
+		Set<int[]> moves = new HashSet<int[]>();
+
+		for (int i = 0; i < L; i++)
+			for (int j = 0; j < H; j++) {
+				if (state[i][j] == 0)
+					moves.add(new int[] { i, j });
+			}
+
+		return moves;
 	}
 
 	// Renvoie l'id du joueur gagnant, 0 si match nul et null si pas un état

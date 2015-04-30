@@ -16,6 +16,8 @@ public abstract class Jeu<S, A> {
 											// appliquant l'action action à la
 											// position state
 
+	abstract Set<A> legalMoves(S state);
+	
 	abstract boolean terminal(S state); //Renvoie true ssi state est un état terminal
 
 	abstract int utility(S state); //Utilité associée à l'état terminal state
