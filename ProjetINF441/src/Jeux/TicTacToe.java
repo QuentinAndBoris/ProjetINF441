@@ -146,10 +146,10 @@ public class TicTacToe extends Jeu<int[][], int[]> {
 
 		// Diagonales ascendantes
 
-		for (int l = -Math.min(H, L) + 1; l < Math.min(H, L) - 1; l++) {
+		for (int l = -Math.min(H, L) + 1; l <= Math.min(H, L) - 1; l++) {
 			joueur = 0;
 			compteur = 0;
-			for (int i = 0; i < l; i++) {
+			for (int i = Math.max(0, -l); i < Math.min(L, H-l); i++) {
 
 				if (joueur != 0) {
 					if (state[i][l + i] == joueur) {
@@ -169,6 +169,7 @@ public class TicTacToe extends Jeu<int[][], int[]> {
 				}
 			}
 		}
+		
 		return !emptyCase;
 	}
 
@@ -277,15 +278,16 @@ public class TicTacToe extends Jeu<int[][], int[]> {
 					if (state[i][l - i - 1] != 0)
 						compteur++;
 				}
+
 			}
 		}
 
 		// Diagonales ascendantes
 
-		for (int l = -Math.min(H, L) + 1; l < Math.min(H, L) - 1; l++) {
+		for (int l = -Math.min(H, L) + 1; l <= Math.min(H, L) - 1; l++) {
 			joueur = 0;
 			compteur = 0;
-			for (int i = 0; i < l; i++) {
+			for (int i = Math.max(0, -l); i < Math.min(L, H-l); i++) {
 
 				if (joueur != 0) {
 					if (state[i][l + i] == joueur) {

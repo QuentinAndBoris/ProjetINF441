@@ -1,4 +1,5 @@
 import Jeux.MinMaxAlgo;
+import Jeux.NegaMax;
 import Jeux.TicTacToe;
 
 public class Test {
@@ -11,12 +12,18 @@ public class Test {
 
 		morpion.print(position);
 
-		System.out.println("");
+		System.out.println(" ");
 
 		MinMaxAlgo<int[][], int[]> search = new MinMaxAlgo(morpion);
 
 		int result = search.MinMax(position, -1);
+		
+		NegaMax<int[][],int []> negaSearch = new NegaMax(morpion);
+		
+		int negaResult = negaSearch.NegaMax(position, -1);
 
 		System.out.println(result);
+		
+		System.out.println(negaResult);
 	}
 }
