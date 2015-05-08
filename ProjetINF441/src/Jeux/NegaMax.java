@@ -12,18 +12,19 @@ public class NegaMax<S, A> {
 		this.jeu = jeu;
 	}
 
+	//Renvoie l'identité du joueur qui gagne dans la posistion state, le premier à jouer étant player
 	public int NegaMax(S state, int player) {
 
 		if (jeu.terminal(state))
-			return player*jeu.utility(state);
+			return jeu.utility(state);
 
 		else {
 			int score = Integer.MIN_VALUE;
 			Set<A> moves = jeu.legalMoves(state);
 			for (A move : moves) {
-				int value = -NegaMax((S) jeu.result(state, move, player), -player);
-				if (value > score)
-					score = value;
+				int value = player*NegaMax((S) jeu.result(state, move, player), -player);
+				if (value > player*score)
+					score = player*value;
 			}
 			
 			return score;
