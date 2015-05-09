@@ -19,15 +19,15 @@ public class NegaMax<S, A> {
 			return jeu.utility(state);
 
 		else {
-			int score = Integer.MIN_VALUE;
+			int score = -1000000;
 			Set<A> moves = jeu.legalMoves(state);
 			for (A move : moves) {
 				int value = player*NegaMax((S) jeu.result(state, move, player), -player);
-				if (value > player*score)
-					score = player*value;
+				if (value > score)
+					score = value;
 			}
 			
-			return score;
+			return player*score;
 		}
 
 	}

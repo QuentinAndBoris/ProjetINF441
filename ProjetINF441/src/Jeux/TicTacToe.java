@@ -149,7 +149,7 @@ public class TicTacToe extends Jeu<int[][], int[]> {
 		for (int l = -Math.min(H, L) + 1; l <= Math.min(H, L) - 1; l++) {
 			joueur = 0;
 			compteur = 0;
-			for (int i = Math.max(0, -l); i < Math.min(L, H-l); i++) {
+			for (int i = Math.max(0, -l); i < Math.min(L, H - l); i++) {
 
 				if (joueur != 0) {
 					if (state[i][l + i] == joueur) {
@@ -169,7 +169,7 @@ public class TicTacToe extends Jeu<int[][], int[]> {
 				}
 			}
 		}
-		
+
 		return !emptyCase;
 	}
 
@@ -287,7 +287,7 @@ public class TicTacToe extends Jeu<int[][], int[]> {
 		for (int l = -Math.min(H, L) + 1; l <= Math.min(H, L) - 1; l++) {
 			joueur = 0;
 			compteur = 0;
-			for (int i = Math.max(0, -l); i < Math.min(L, H-l); i++) {
+			for (int i = Math.max(0, -l); i < Math.min(L, H - l); i++) {
 
 				if (joueur != 0) {
 					if (state[i][l + i] == joueur) {
@@ -321,5 +321,23 @@ public class TicTacToe extends Jeu<int[][], int[]> {
 		}
 
 	}
+	//Tire une position aléatoire (utile pour les tests)
+	public int[][] randomPosition() {
 
+		int[][] result = new int[L][H];
+		for (int i = 0; i < L; i++) {
+			for (int j = 0; j < H; j++) {
+				double r = Math.random();
+				if (r < 0.3333)
+					result[i][j] = 0;
+				else {
+					if (r < 0.6666)
+						result[i][j] = 1;
+					else
+						result[i][j] = -1;
+				}
+			}
+		}
+		return result;
+	}
 }
